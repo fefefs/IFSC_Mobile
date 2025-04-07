@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     int i = 0;
     EditText edPeso,edAltura;
     TextView tvResultado;
+
+    TextView txtIMC;
     Button buttonCalcular;
 
     Button buttonNextImage;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     Integer imagens[] = new Integer[]{R.drawable.normal, R.drawable.obesidade1, R.drawable.obesidade2, R.drawable.obesidade3, R.drawable.perfil, R.drawable.sobrepeso, R.drawable.cachorro };
 
-    int posicao = 0;
+    int imc = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +43,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d("ciclo de vida", "metodo onCreate");
 
         setContentView(R.layout.activity_main);
+        txtIMC=findViewById(R.id.txtCalcularIMC);
         edPeso=findViewById((R.id.editTxtPeso));
         edAltura=findViewById(R.id.editTxtAltura);
         buttonCalcular=findViewById(R.id.button);
-        buttonNextImage=findViewById(R.id.button2);
         img=findViewById(R.id.imageView);
 
         // tratamento click button
-        //buttonCalcular.setOnClickListener(v ->{...});
-        buttonNextImage.setOnClickListener(v ->{
-            img.setImageResource(imagens[posicao]);
-            if(posicao<imagens.length-1){
-                posicao++;
-            } else{
-                posicao = 0;
-            }
+        buttonCalcular.setOnClickListener(v ->{
+            float peso,altura,imc;
+            peso = Float.parseFloat(edPeso.getText().toString());
+            altura = Float.parseFloat(edAltura.getText().toString());
+
+            imc = (peso/(altura * altura));
+
         });
 
     }
