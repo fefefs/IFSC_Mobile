@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +26,14 @@ public class MainActivity extends AppCompatActivity {
     TextView tvResultado;
     Button buttonCalcular;
 
+    Button buttonNextImage;
+
+    ImageView img;
+
+    Integer imagens[] = new Integer[]{R.drawable.normal, R.drawable.obesidade1, R.drawable.obesidade2, R.drawable.obesidade3, R.drawable.perfil, R.drawable.sobrepeso, R.drawable.cachorro };
+
+    int posicao = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,13 +43,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         edPeso=findViewById((R.id.editTxtPeso));
         edAltura=findViewById(R.id.editTxtAltura);
-        tvResultado=findViewById(R.id.tvResultadoImc);
         buttonCalcular=findViewById(R.id.button);
-        buttonCalcular.setOnClickListener(v ->{
-            Intent intent = new Intent(getApplicationContext(), MainActivityB.class);
-            String msg = edPeso.getText().toString();
-            intent.putExtra("mensagem",msg);
-            startActivity(intent);
+        buttonNextImage=findViewById(R.id.button2);
+        img=findViewById(R.id.imageView);
+
+        // tratamento click button
+        //buttonCalcular.setOnClickListener(v ->{...});
+        buttonNextImage.setOnClickListener(v ->{
+            img.setImageResource(imagens[posicao]);
+            if(posicao<imagens.length-1){
+                posicao++;
+            } else{
+                posicao = 0;
+            }
         });
 
     }
