@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     ListView lista;
 
-    String [] nomes = new String[]{"Anne", "Fernanda", "João1", "João2", "João3"};
+    String [] nomes = new String[]{"Mercúrio","Vênus","Terra","Marte","Júpiter","Saturno","Urano","Netuno"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapterNomes=new ArrayAdapter(this, R.layout.item_lista, R.id.textView2, nomes);
 
         lista.setAdapter(arrayAdapterNomes);
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String nome = nomes[position];
+
+                Intent intent = new Intent(getApplicationContext(), Planetas.class);
+                intent.putExtra("Nome", nome);
+
+            }
+        });
 
 
 
