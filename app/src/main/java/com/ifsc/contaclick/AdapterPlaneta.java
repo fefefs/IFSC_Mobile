@@ -30,8 +30,10 @@ public class AdapterPlaneta extends ArrayAdapter<Planeta> {
 
         TextView tvNome = convertView.findViewById(R.id.nomePlaneta);
         Planeta p = getItem(position);
-
         tvNome.setText(this.getItem(position).nome);
+
+        ImageView iVPlaneta = convertView.findViewById(R.id.imgPlanetas);
+        iVPlaneta.setImageResource(this.getItem(position).img);
 
         return convertView;
     }

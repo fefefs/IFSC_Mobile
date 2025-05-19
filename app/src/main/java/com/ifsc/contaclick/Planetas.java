@@ -17,9 +17,15 @@ public class Planetas extends AppCompatActivity {
         setContentView(R.layout.tela_planetas);
 
         Bundle bundle = getIntent().getExtras();
-        String msg = bundle.getString("Nome");
-        TextView textView = findViewById(R.id.textView3);
-        textView.setText(msg);
+        Planeta p =(Planeta) bundle.getSerializable("Planeta");
+
+
+
+        TextView NomeP = findViewById(R.id.textView3);
+        NomeP.setText(p.nome);
+
+        ImageView imgP = findViewById(R.id.imgPlaneta);
+        imgP.setImageResource(p.img);
 
 
     }
