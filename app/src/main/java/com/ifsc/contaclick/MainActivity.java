@@ -1,64 +1,71 @@
 package com.ifsc.contaclick;
 
-import android.content.Intent;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
-import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     int i = 0;
-    EditText edPeso,edAltura;
-    TextView tvResultado;
+    SQLiteDatabase db;
+    EditText nome;
+    Button salvar;
 
-    TextView txtIMC;
-    Button buttonCalcular;
+    ListView lista;
 
-    Button buttonNextImage;
-
-    ImageView img;
-
-    Integer imagens[] = new Integer[]{R.drawable.normal, R.drawable.obesidade1, R.drawable.obesidade2, R.drawable.obesidade3, R.drawable.perfil, R.drawable.sobrepeso, R.drawable.cachorro };
-
-    int imc = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d("ciclo de vida", "metodo onCreate");
-
         setContentView(R.layout.activity_main);
-        txtIMC=findViewById(R.id.txtCalcularIMC);
-        edPeso=findViewById((R.id.editTxtPeso));
-        edAltura=findViewById(R.id.editTxtAltura);
-        buttonCalcular=findViewById(R.id.button);
-        img=findViewById(R.id.imageView);
+        db=openOrCreateDatabase("banco", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS notas(id INTEGER PRIMARY KEY AUTOINCREMENT, txt VARCHAR)");
 
-        // tratamento click button
-        buttonCalcular.setOnClickListener(v ->{
-            float peso,altura,imc;
-            peso = Float.parseFloat(edPeso.getText().toString());
-            altura = Float.parseFloat(edAltura.getText().toString());
 
-            imc = (peso/(altura * altura));
+        nome = findViewById(R.id.edTextNome);
+        salvar = findViewById(R.id.button);
+        lista = findViewById(R.id.listView);
 
+        salvar.setOnClickListener(v ->{
+            String msg = nome.getText().toString();
+            insereNota(msg);
         });
 
+
+    }
+
+    public void listagemNotas(){
+        Cursor cursor = db.rawQuery("SELECT * FROM notas", null);
+        cursor.moveToFirst();
+        ArrayList<String> listaNotas = new ArrayList<String>();
+        while (!cursor.isAfterLast()){
+            int coluna = cursor.getColumnIndex("txt");
+            listaNotas.add(cursor.getString(coluna));
+            cursor.moveToNext();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, listaNotas);
+        lista.setAdapter(adapter);
+    }
+
+    public void insereNota(String txt){
+        ContentValues cv = new ContentValues();
+        cv.put("txt",txt);
+        db.insert("notas", null, cv);
+        listagemNotas();
     }
 
 }
