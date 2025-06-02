@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    int i = 0;
     SQLiteDatabase db;
     EditText nome;
     Button salvar;
@@ -31,9 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db=openOrCreateDatabase("banco", Context.MODE_PRIVATE, null);
+        db = openOrCreateDatabase("banco", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS notas(id INTEGER PRIMARY KEY AUTOINCREMENT, txt VARCHAR)");
-
 
         nome = findViewById(R.id.edTextNome);
         salvar = findViewById(R.id.button);
@@ -50,14 +48,14 @@ public class MainActivity extends AppCompatActivity {
     public void listagemNotas(){
         Cursor cursor = db.rawQuery("SELECT * FROM notas", null);
         cursor.moveToFirst();
-        ArrayList<String> listaNotas = new ArrayList<String>();
+        ArrayList<String> listaNotass = new ArrayList<String>();
         while (!cursor.isAfterLast()){
             int coluna = cursor.getColumnIndex("txt");
-            listaNotas.add(cursor.getString(coluna));
+            listaNotass.add(cursor.getString(coluna));
             cursor.moveToNext();
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listaNotas);
+                android.R.layout.simple_list_item_1, android.R.id.text1, listaNotass);
         lista.setAdapter(adapter);
     }
 
