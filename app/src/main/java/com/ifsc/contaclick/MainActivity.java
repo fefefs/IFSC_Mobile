@@ -1,14 +1,19 @@
 package com.ifsc.contaclick;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -18,23 +23,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    int i = 0;
-    EditText edPeso,edAltura;
-    TextView tvResultado;
-
-    TextView txtIMC;
-    Button buttonCalcular;
-
-    Button buttonNextImage;
-
-    ImageView img;
-
-    Integer imagens[] = new Integer[]{R.drawable.normal, R.drawable.obesidade1, R.drawable.obesidade2, R.drawable.obesidade3, R.drawable.perfil, R.drawable.sobrepeso, R.drawable.cachorro };
-
-    int imc = 0;
+    PackageManager pm;
+    List<ApplicationInfo> applicationInfoList;
+    ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +38,25 @@ public class MainActivity extends AppCompatActivity {
         Log.d("ciclo de vida", "metodo onCreate");
 
         setContentView(R.layout.activity_main);
-        txtIMC=findViewById(R.id.txtCalcularIMC);
-        edPeso=findViewById((R.id.editTxtPeso));
-        edAltura=findViewById(R.id.editTxtAltura);
-        buttonCalcular=findViewById(R.id.button);
-        img=findViewById(R.id.imageView);
+        lv=findViewById(R.id.listView);
 
-        // tratamento click button
-        buttonCalcular.setOnClickListener(v ->{
-            float peso,altura,imc;
-            peso = Float.parseFloat(edPeso.getText().toString());
-            altura = Float.parseFloat(edAltura.getText().toString());
+        pm = getPackageManager();
+        applicationInfoList = pm.getInstalledApplications(PackageManager.MATCH_ALL);
 
-            imc = (peso/(altura * altura));
-
+        AppAdapter appAdapter = new AppAdapter(this, R.layout.app_item,applicationInfoList);
+        lv.setAdapter(appAdapter);
+        lv.setOnItemClickListener((adapter, view, position, id)->{
+            ApplicationInfo applicationInfo = (ApplicationInfo) adapter.getItemAtPosition(position);
+            Intent i = pm.getLaunchIntentForPackage(applicationInfo.packageName);
+            if(i!=null){
+                startActivity(i);
+            } else{
+                Toast.makeText(getApplicationContext(),"App não encontrado", Toast.LENGTH_LONG);
+            }
         });
+
+
+
 
     }
 
