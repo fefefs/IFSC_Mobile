@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.List;
 
@@ -29,10 +30,20 @@ public class AppAdapter extends ArrayAdapter<ApplicationInfo> {
         View v = layoutInflater.inflate(mresource,parent,false);
         ImageView imageView = v.findViewById(R.id.imageView);
         TextView textView = v.findViewById(R.id.textView);
+        LinearLayout ll = v.findViewById(R.id.linearlayout);
 
         ApplicationInfo appinfo = getItem(position);
         textView.setText(appinfo.loadLabel(getContext().getPackageManager()));
         imageView.setImageDrawable(appinfo.loadIcon(getContext().getPackageManager()));
+
+        TextView tvPackageName = new TextView(getContext());
+        tvPackageName.setText(appinfo.packageName);
+
+        TextView tvs = new TextView(getContext());
+        tvs.setText((CharSequence) appinfo.className);
+
+        ll.addView(tvPackageName);
+        ll.addView(tvs);
 
         return v;
     }

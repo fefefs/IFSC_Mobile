@@ -3,6 +3,7 @@ package com.ifsc.contaclick;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,14 +36,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d("ciclo de vida", "metodo onCreate");
+        //EdgeToEdge.enable(savedInstanceState);
 
         setContentView(R.layout.activity_main);
         lv=findViewById(R.id.listView);
 
         pm = getPackageManager();
-        applicationInfoList = pm.getInstalledApplications(PackageManager.MATCH_ALL);
+        //applicationInfoList = pm.getInstalledApplications(PackageManager.MATCH_ALL);
+        Intent intentFilter = new Intent(Intent.ACTION_MAIN);
+        intentFilter.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        List< ResolveInfo> LRInfo = pm.queryIntentActivities(intentFilter, 0);
+        applicationInfoList = new ArrayList<>();
+
+        for(ResolveInfo r:LRInfo){
+            applicationInfoList.add(r.activityInfo.applicationInfo);
+        }
 
         AppAdapter appAdapter = new AppAdapter(this, R.layout.app_item,applicationInfoList);
         lv.setAdapter(appAdapter);
