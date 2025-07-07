@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.ifsc.contaclick"
+    namespace = "com.ifsc.contaclicks"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.ifsc.contaclick"
+        applicationId = "com.ifsc.contaclicks"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -29,7 +29,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    buildToolsVersion = "30.0.3"
 }
 
 dependencies {
