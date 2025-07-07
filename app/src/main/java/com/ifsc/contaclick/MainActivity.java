@@ -52,45 +52,43 @@ public class MainActivity extends AppCompatActivity {
             getLocalizacao();
         });
 
+    }
 
-        public void getLocalizacao(){
-            if(checaESolicitaPermicao()){
+    public void getLocalizacao(){
+        if(checaESolicitaPermicao()){
 
-                tvLatitude.setText("Buscando localizacao");
-                @SuppressLint("MissingPermission") Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if(l!=null) {
-                    tvLatitude.setText(Double.toString(l.getLatitude()));
-                    tvLongitude.setText(Double.toString(l.getLongitude()));
-                } else {
-                    tvLatitude.setText("Sem localização");
-                }
-
+            tvLatitude.setText("Buscando localizacao");
+            @SuppressLint("MissingPermission") Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(l!=null) {
+                tvLatitude.setText(Double.toString(l.getLatitude()));
+                tvLongitude.setText(Double.toString(l.getLongitude()));
             } else {
-                tvLatitude.setText("Permição negada");
+                tvLatitude.setText("Sem localização");
             }
 
+        } else {
+            tvLatitude.setText("Permição negada");
         }
 
-        public boolean checaESolicitaPermicao(){
-            if(ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED ||
-               ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED)
-            {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{ Manifest.permission.ACCESS_FINE_LOCATION,
-                                      Manifest.permission.ACCESS_COARSE_LOCATION
-                                      }, PackageManager.PERMISSION_GRANTED
-                        );
-                return false;
-            } else {
-                return true;
-            }
+    }
+
+    public boolean checaESolicitaPermicao(){
+        if(ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{ Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    }, PackageManager.PERMISSION_GRANTED
+            );
+            return false;
+        } else {
+            return true;
         }
-
-
     }
 
 }
